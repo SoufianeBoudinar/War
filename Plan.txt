@@ -1,0 +1,61 @@
+- Card class
+
+	- Attributes: - suit: Hearts, diamonds, spades, and clubs
+		      - color:  Red (hearts and diamonds) and black (spades and clubs)
+		      - rank: 1-14 (J, A, K, Q, Ja, 10-2)
+
+	- 4 Subclasses: 
+
+		- Number: 2-10 (36 cards)
+			- Attributes:
+				- Inherits: suit, color, rank
+				- value: 2-10
+		- Court: 12 Jack, Queen and king cards
+			- Attributes:
+				- Inherits: suit, color, rank
+				- face
+		- Ace: 4 total cards.
+			- Attributes:
+				- Inherits: suit, color, rank
+		- Joker: 2 Cards.
+			- Attributes:
+				- Inherits: suit, color, rank
+
+
+- Deck class (Stack)
+
+	- Attributes: -isempty: bool default false checks weither deck is empty or not
+		      -count: how many cards
+
+	- Methods: - shuffle: Randomize position of each card within the deck
+		   - dealCards: Drop card using pop() into a hand of a player
+
+	- Subcalass:
+
+		- Hand (Stack)
+			- Attributes: - Inherits: isempty, count
+				      - player: which player the hand belongs to
+				      - quantity: how many cards in hand
+		      	              
+			- Methods: - Inherits: dealCards
+				   - isWinner: bool default false if hand equals 54 then equals true
+		- DiscardPile (Stack):
+			- Attributes: 
+				- Inherits: isempty, count
+				- player: which player the hand belongs to
+
+			- Methods: - Inhertis: shuffle
+				   - makeHand: convert the discard pile into the hand of the same player it belongs to using clone()				
+
+- Table class (Stack)
+
+	- Methods: - compareCards: Compare the cards put into table and decides which has higher rank.
+		   - discardCard: Puts the cards on table into the discard pile based on the result of compareCards
+		   - isWar: Checks each time 2 cards are played if they are equal.		
+			- while there is war, each player puts 3 cards ontop of existing cards facedown, 
+				If 4th cards equal continue
+				If not compareCrds
+
+
+		   
+		
