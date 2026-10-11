@@ -1,17 +1,26 @@
 public class Number extends Card {
-    private final int[] values = {2, 3, 4, 5, 6, 7, 8, 9, 10};
+    private final int[][] values = {{2, 3, 4, 5, 6, 7, 8, 9, 10}, {1, 2, 3, 4, 5, 6, 7, 8, 9}};
     private int value;
 
-    public Number(int sindex, int cindex, int rindex, int vindex) {
-        super(suits,colors,ranks);
+
+    public Number(int sindex, int vindex) {
+        super(suits, colors, ranks);
         this.suit = suits[sindex];
-        this.color = colors[cindex];
-        this.rank = ranks[rindex];
-        this.value = values[vindex];
-    }
+        this.value = values[0][vindex];
+        this.type = String.valueOf(value);
 
+        if (suit.contentEquals("Hearts") || suit.contentEquals("Diamonds")) {
+            this.color = colors[0];
+        } else {
+            this.color = colors[1];
+        }
 
-    public void displayNumber(){
-        System.out.println(suit + "\n" + color + "\n" + rank + "\n" + value);
+        for (int i = 0; i < values[0].length; i++) {
+            if (value == values[0][i]) {
+                this.rank = values[1][i];
+                break;
+            }
+        }
+        count++;
     }
 }
