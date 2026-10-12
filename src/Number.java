@@ -5,6 +5,7 @@ public class Number extends Card {
 
     public Number(int sindex, int vindex) {
         super(suits, colors, ranks);
+        this.id = count + 1;
         this.suit = suits[sindex];
         this.value = values[0][vindex];
         this.type = String.valueOf(value);

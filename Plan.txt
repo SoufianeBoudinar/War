@@ -35,7 +35,7 @@
 		- Hand (Stack)
 			- Attributes: - Inherits: isempty, count
 				      - player: which player the hand belongs to
-				      - quantity: how many cards in hand
+				      - handsize: how many cards in hand
 		      	              
 			- Methods: - Inherits: dealCards
 				   - isWinner: bool default false if hand equals 54 then equals true

@@ -1,15 +1,19 @@
 import java.util.Stack;
 
-public class Deck {
+public class Deck extends Stack{
     private Stack<Card> deck;
-    private boolean isempty = false;
-    private int count;
+    private int decksize;
+    private boolean isempty;
+    private int count = Card.count;
 
     public Deck() {
         deck = new Stack<>();
         makeDeck();
+        decksize = deck.size();
+        shuffleDeck();
     }
 
+    // Fill up deck with cards loops and addCard method
     private void makeDeck() {
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 4; j++){
@@ -36,20 +40,41 @@ public class Deck {
         }
     }
 
+    // Add card to deck
     public void addCard(Card card) {
         deck.add(card);
     }
 
-    public void displayDeck() {
+    // Display every element in deck
+    public void displayDeck(){
         for (int i = 0; i < deck.size(); i++) {
             deck.elementAt(i).displayCard();
         }
     }
 
-    public void shuffleCards() {
+    // Shuffle using Fisher–Yates (Knuth) shuffle
+    public void shuffleDeck() {
+        Card buffer = new Card();  // Hold temp cards
+        int random = 0;
+        for (int i = decksize - 1; i >= 0; i--) {
+            random = (int) (Math.random() * i); // Generate number between 0-53
+            buffer = deck.get(random);
+            deck.set(random, deck.get(i));
+            deck.set(i, buffer);
+        }
     }
 
-    public void dealCards() {
 
+    public void dealCards(Hand hand1, Hand hand2) {
+        int lastindex = decksize - 1;
+        int middleindex = (decksize - 1) / 2;
+
+        for (int i = lastindex; i >= middleindex; i--) {
+            hand1.push(deck.get(i));
+        }
+
+        for (int i = middleindex; i >= 0; i--){
+            hand2.push(deck.get(i));
+        }
     }
 }

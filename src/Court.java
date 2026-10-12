@@ -4,6 +4,7 @@ public class Court extends Card {
 
     public Court(int sindex,  int findex) {
         super(suits, colors, ranks);
+        this.id = count + 1;
         this.suit = suits[sindex];
         this.face = faces[0][findex];
         this.type = faces[0][findex];
