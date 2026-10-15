@@ -1,17 +1,15 @@
 import java.util.Stack;
 
-public class Deck extends Stack{
+public class Deck {
     private Stack<Card> deck;
-    private int decksize;
-    private boolean isempty;
-    private int count = Card.count;
+    protected int decksize;
 
     public Deck() {
         deck = new Stack<>();
         makeDeck();
         decksize = deck.size();
-        shuffleDeck();
     }
+
 
     // Fill up deck with cards loops and addCard method
     private void makeDeck() {
@@ -42,12 +40,12 @@ public class Deck extends Stack{
 
     // Add card to deck
     public void addCard(Card card) {
-        deck.add(card);
+        deck.push(card);
     }
 
     // Display every element in deck
     public void displayDeck(){
-        for (int i = 0; i < deck.size(); i++) {
+        for (int i = decksize - 1; i >= 0; i--) {
             deck.elementAt(i).displayCard();
         }
     }
@@ -70,11 +68,11 @@ public class Deck extends Stack{
         int middleindex = (decksize - 1) / 2;
 
         for (int i = lastindex; i >= middleindex; i--) {
-            hand1.push(deck.get(i));
+            hand1.toHand(deck.get(i));
         }
 
         for (int i = middleindex; i >= 0; i--){
-            hand2.push(deck.get(i));
+            hand2.toHand(deck.get(i));
         }
     }
 }

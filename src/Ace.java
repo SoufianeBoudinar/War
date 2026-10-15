@@ -7,12 +7,12 @@ public class Ace extends Card {
         this.rank = 13;
         this.type = "A";
 
+        //Assign color based on suit
         if (suit.contentEquals("Hearts") || suit.contentEquals("Diamonds")) {
             this.color = colors[0];
         } else {
             this.color = colors[1];
         }
-
         count++;
     }
 }

@@ -30,22 +30,23 @@
 	- Methods: - shuffle: Randomize position of each card within the deck
 		   - dealCards: Drop card using pop() into a hand of a player
 
-	- Subcalass:
 
-		- Hand (Stack)
-			- Attributes: - Inherits: isempty, count
-				      - player: which player the hand belongs to
-				      - handsize: how many cards in hand
+- Hand (Stack)
+	- Attributes: - Inherits: isempty, count
+		       - player: which player the hand belongs to
+		       - handsize: how many cards in hand
 		      	              
-			- Methods: - Inherits: dealCards
+	- Methods: - Inherits: dealCards
 				   - isWinner: bool default false if hand equals 54 then equals true
-		- DiscardPile (Stack):
-			- Attributes: 
-				- Inherits: isempty, count
-				- player: which player the hand belongs to
 
-			- Methods: - Inhertis: shuffle
-				   - makeHand: convert the discard pile into the hand of the same player it belongs to using clone()				
+- DiscardPile (Stack):
+	- Attributes: 
+		- Inherits: isempty, count
+		- player: which player the hand belongs to
+
+	- Methods: - shuffle
+		    - makeHand: convert the discard pile into the hand of the same player it belongs to using clone()				
+
 
 - Table class (Stack)
 
@@ -59,3 +60,309 @@
 
 		   
 		
+
+
+
+
+
+
+
+
+- Main problems:
+	1. do while war loop is rigged, you have 5 decideWinner method call 3 times.
+
+	2. decideTable doesn't account for when table is empty
+		- inside decideTable method look at the result variable
+
+	3. if war is on and a player has empty hand and discardPile but he won the war, meaning he won the 4th 	war table, the do while loop finishes with just putting the cards from table to the player's discard 	pile. This results in the player the match even tho his discard pile is still full.
+
+
+
+	- made warWinner method to distinguish war result and match result
+	if warwinner = player 1/2
+	-> player1/2.discardToHand
+
+	(But there is 2 cases)
+	- warwinner beween war tables [1-3]
+		-> used to not be a problem with decideWinner, now with warWinner the flag is warend not 		matched
+	- warwinner in war table 4
+		-> do here
+
+	(But that poses another problem)
+	- there is nothing that does tableToDiscard in war method
+	- only reason tableToDiscard even happens in war table 4 is because do while loop does another loop 	after the war is finished, calls war again and the check happens in war at the beginning of for loop
+		-> decided to add decideTable to end of war method
+		-> but do while only stops after entering war next iteration 
+		-> had to make iswar false inside warWinner method so do while loop ends right after war method  		to avoid decideTable executing a 2nd time in next iteration 
+
+	(But another problem arose)
+	- if the decideTable inside war gets result = 0 then iswar becomes true, by result the do while goes to 	next iteration which causes a problem with decideTable again
+		-> had to make sure the decideTable only triggers for the first war launched normally
+		-> added a warcount which gets incremented inside warWinner and if statement for it
+		-> made a rest for warcount after do while loop
+	
+	(Problem 3 still on tho)
+	- made a switch that checks the winner inside warWinner
+		-> winner = 1 then player1.discardToHand
+		-> winner = 2 then player2.discardTohand
+	- but then I noticed that warWinner doesn't really take into account who won the table it just checks 	whose hand is empty
+	- so in the case of player having empty hand but still won the war table 4 it still consider him the 	loser
+	- decided to make the switch depend on table.tableResult not winner
+		-> forgot that decideTable makes table empty so now tableResult will throw error
+
+	(Confusing problem)
+	- can't put the switch before warWinner/decideTable because it requires the discardPile to be not empty
+	- that makes it dependent on decideTable
+	- can't make that before warWinner too because it will make it not flag in all cases
+		-> warWinner depends on hand and discardPile being empty
+	- also the discard needs to not be empty and that happens only after decideTable
+	- also both warWinner and decideTable modify iswar with either false or true respectively
+		-> so I can't put decideTable before warWinner
+	- I can't put the switch inside warWinner because that will fuck the war tables [1-3], and because the 	switch needs discardPile to be not empty
+
+	- last change made the switch inside decideTable and added warwinner = 0 after either case
+	- added a global variable wartable4_result and made it equals to decideTable before warWinner
+	
+	(Solutions for 4 cases of the problem)
+	1. War table 4, a player played his last card in hand and won war
+		
+	{
+		// This puts the table in his discard pile while affecting table result to the variable
+		wartable4_result = decideTable(); 
+		
+		// This call does nothing in this case because discardPile will be full 
+		warWinner();
+		
+		// This gives the discardPile to hand of the winner
+		switch (wartable4_result) {
+                    case 1 -> {
+                    	player1.discardToHand();
+                    	warwinner = 1;
+			iswar = false; // had to add this to stop the do while loop
+                    }
+                    case 2 -> {
+                        player2.discardToHand();
+                        warwinner = 2;
+			iswar = false; // same here
+                    }
+            	}
+	}
+
+	2. War table 4, there is another war decided by decideTable but one player has no cards left 
+
+	{
+		// returns 0 cuz war and makes iswar true
+		wartable4_result = decideTable(); 
+		
+		// sees that hand and discardPile are empty and makes iswar flase, and decides warwinner
+		warWinner();
+		
+		// doesn't run in this case cus wartable4_result = 0
+		switch (wartable4_result) {
+                    case 1 -> {
+                    	player1.discardToHand();
+                    	warwinner = 1;
+			iswar = false;
+                    }
+                    case 2 -> {
+                        player2.discardToHand();
+                        warwinner = 2;
+			iswar = false;
+                    }
+            	}
+	}
+	
+	3. War table 4, there is another war but one player has only 1 card left in hand 
+
+	{
+		// returns 0 cuz war and makes iswar true
+		wartable4_result = decideTable(); 
+		
+		// doesn't run cuz hand is not empty
+		warWinner();
+		
+		// doesn't run in this case cus wartable4_result = 0
+		switch (wartable4_result) {
+                    case 1 -> {
+                    	player1.discardToHand();
+                    	warwinner = 1;
+			iswar = false;
+                    }
+                    case 2 -> {
+                        player2.discardToHand();
+                        warwinner = 2;
+			iswar = false;
+                    }
+            	}
+
+		// so the do while goes again
+		do {
+                    if (warcount == 0)
+                    	decideTable(); // added warcount++ inside decideTable cuz in this case nothing does it
+                    war();
+            	} while(iswar);
+		warcount = 0;
+		
+		// war executes again, plays 1 iteration of loop and stop in the next cuz hand & discard empty
+	}
+	
+	4. War table 4, a player has empty hand and discardPile and loses war table 4
+	
+	{
+		// returns id of player that won and gives table to their discardPile
+		wartable4_result = decideTable(); 
+		
+		// sees that hand and discardPile are empty and makes iswar false, and decides warwinner
+		warWinner();
+		
+		// puts discardPile of player who won into their hand and makes iswar false
+		switch (wartable4_result) {
+                    case 1 -> {
+                    	player1.discardToHand();
+                    	warwinner = 1;
+			iswar = false;
+                    }
+                    case 2 -> {
+                        player2.discardToHand();
+                        warwinner = 2;
+			iswar = false;
+                    }
+            	}
+	}
+
+	
+	(Noticed another problem)
+	- the result shows that there are 55 cards in winner hand + discardPile
+	- but the deck is designed to hold 54 cards
+		
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+The output studied:
+
+===========
+War table 3
+===========
+Player 1 hand size:1, discard size: 0
+Player 2 hand size:22, discard size: 24
+  3♠  
+
+  K♥  
+
+  A♦  
+
+  4♠  
+
+  2♠  
+
+  7♥  
+
+  2♥  
+
+  2♦  
+
+===========
+War table 4
+===========
+Player 1 hand size:0, discard size: 0
+Player 2 hand size:21, discard size: 24
+  J♠  
+
+  6♦  
+
+  3♠  
+
+  K♥  
+
+  A♦  
+
+  4♠  
+
+  2♠  
+
+  7♥  
+
+  2♥  
+
+  2♦  
+
+Winner: player 2
+Player 1
+Pile size: 10
+Hand size: 0
+Player 2
+Pile size: 24
+Hand size: 21
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

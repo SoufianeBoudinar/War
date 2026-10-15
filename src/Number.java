@@ -10,12 +10,14 @@ public class Number extends Card {
         this.value = values[0][vindex];
         this.type = String.valueOf(value);
 
+        //Assign color based on suit
         if (suit.contentEquals("Hearts") || suit.contentEquals("Diamonds")) {
             this.color = colors[0];
         } else {
             this.color = colors[1];
         }
 
+        //Assign rank based on value
         for (int i = 0; i < values[0].length; i++) {
             if (value == values[0][i]) {
                 this.rank = values[1][i];

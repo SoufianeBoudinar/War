@@ -13,6 +13,10 @@ public class Card {
 
     public Card() {}
 
+    public int getRank () {
+        return rank;
+    }
+
     public void displayCard() {
         String symbol = "";
         String red;
