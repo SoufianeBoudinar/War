@@ -234,6 +234,8 @@
 	(Noticed another problem)
 	- the result shows that there are 55 cards in winner hand + discardPile
 	- but the deck is designed to hold 54 cards
+		-> fixed, seems deck.dealcards() had a problem in 1st loop.
+	
 		
 	
 

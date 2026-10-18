@@ -15,6 +15,7 @@ public class Main {
     public int warcount = 0;
     int wartable4_result;
 
+
     // Decide war winner
     // Check hand and discardPile, if both are empty then declare war end
     public void warWinner() {
@@ -111,7 +112,6 @@ public class Main {
         // Put table to discardPile of round winner
         switch (result) {
             case 1 -> player1.tableToDiscard();
-
             case 2 -> player2.tableToDiscard();
         }
         return result;
@@ -152,5 +152,6 @@ public class Main {
         System.out.println("Player 1: hand size: "+hand1.handSize()+", pile size: "+discardPile1.discardSize());
         System.out.println("Player 2: hand size: "+hand2.handSize()+", pile size: "+discardPile2.discardSize());
         System.out.println("=======================");
+
     }
 }

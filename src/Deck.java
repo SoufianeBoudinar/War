@@ -65,9 +65,9 @@ public class Deck {
 
     public void dealCards(Hand hand1, Hand hand2) {
         int lastindex = decksize - 1;
-        int middleindex = (decksize - 1) / 2;
+        int middleindex = (lastindex) / 2;
 
-        for (int i = lastindex; i >= middleindex; i--) {
+        for (int i = lastindex; i > middleindex; i--) {
             hand1.toHand(deck.get(i));
         }
 
