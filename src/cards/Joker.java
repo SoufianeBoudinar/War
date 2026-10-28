@@ -1,7 +1,8 @@
+package cards;
+
 public class Joker extends Card {
 
     public Joker(int cindex) {
-        super(suits, colors, ranks);
         this.id = count + 1;
         this.color = colors[cindex];
         this.rank = 14;

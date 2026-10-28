@@ -1,3 +1,5 @@
+import game.*;
+
 public class Main {
     Deck deck = new Deck();
     Table table = new Table();
