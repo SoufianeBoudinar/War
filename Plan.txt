@@ -1,4 +1,4 @@
-- cards.Card class
+- Card class
 
 	- Attributes: - suit: Hearts, diamonds, spades, and clubs
 		      - color:  Red (hearts and diamonds) and black (spades and clubs)
@@ -6,23 +6,23 @@
 
 	- 4 Subclasses: 
 
-		- cards.Number: 2-10 (36 cards)
+		- Number: 2-10 (36 cards)
 			- Attributes:
 				- Inherits: suit, color, rank
 				- value: 2-10
-		- cards.Court: 12 Jack, Queen and king cards
+		- Court: 12 Jack, Queen and king cards
 			- Attributes:
 				- Inherits: suit, color, rank
 				- face
-		- cards.Ace: 4 total cards.
+		- Ace: 4 total cards.
 			- Attributes:
 				- Inherits: suit, color, rank
-		- cards.Joker: 2 Cards.
+		- Joker: 2 Cards.
 			- Attributes:
 				- Inherits: suit, color, rank
 
 
-- game.Deck class (Stack)
+- Deck class (Stack)
 
 	- Attributes: -isempty: bool default false checks weither deck is empty or not
 		      -count: how many cards
@@ -31,7 +31,7 @@
 		   - dealCards: Drop card using pop() into a hand of a player
 
 
-- game.Hand (Stack)
+- Hand (Stack)
 	- Attributes: - Inherits: isempty, count
 		       - player: which player the hand belongs to
 		       - handsize: how many cards in hand
@@ -39,7 +39,7 @@
 	- Methods: - Inherits: dealCards
 				   - isWinner: bool default false if hand equals 54 then equals true
 
-- game.DiscardPile (Stack):
+- DiscardPile (Stack):
 	- Attributes: 
 		- Inherits: isempty, count
 		- player: which player the hand belongs to
@@ -48,7 +48,7 @@
 		    - makeHand: convert the discard pile into the hand of the same player it belongs to using clone()				
 
 
-- game.Table class (Stack)
+- Table class (Stack)
 
 	- Methods: - compareCards: Compare the cards put into table and decides which has higher rank.
 		   - discardCard: Puts the cards on table into the discard pile based on the result of compareCards
@@ -242,7 +242,7 @@
 
 	(Looking to optimize the code)
 	- All card subclasses constructors have a bunch of conditions that are repeated for each subclass
-		-> I can put those conditions inside the constructor of the cards.Card class to make the code
+		-> I can put those conditions inside the constructor of the Card class to make the code 
 		more organized
 	
 	
@@ -273,8 +273,8 @@ The output studied:
 ===========
 War table 3
 ===========
-game.Player 1 hand size:1, discard size: 0
-game.Player 2 hand size:22, discard size: 24
+Player 1 hand size:1, discard size: 0
+Player 2 hand size:22, discard size: 24
   3♠  
 
   K♥  
@@ -294,8 +294,8 @@ game.Player 2 hand size:22, discard size: 24
 ===========
 War table 4
 ===========
-game.Player 1 hand size:0, discard size: 0
-game.Player 2 hand size:21, discard size: 24
+Player 1 hand size:0, discard size: 0
+Player 2 hand size:21, discard size: 24
   J♠  
 
   6♦  
@@ -317,12 +317,12 @@ game.Player 2 hand size:21, discard size: 24
   2♦  
 
 Winner: player 2
-game.Player 1
+Player 1
 Pile size: 10
-game.Hand size: 0
-game.Player 2
+Hand size: 0
+Player 2
 Pile size: 24
-game.Hand size: 21
+Hand size: 21
 
 
 
